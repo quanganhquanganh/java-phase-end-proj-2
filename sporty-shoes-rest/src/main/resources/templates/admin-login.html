@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User Login</title>
+    <title>Admin Login</title>
 </head>
 <body>
-    <h1>User Login</h1>
-    <form id="loginForm">
+    <h1>Admin Login</h1>
+    <form id="adminLoginForm">
         <label for="email">Email:</label>
         <input type="email" id="email" required><br><br>
         <label for="password">Password:</label>
@@ -15,13 +15,13 @@
     <p id="message"></p>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            fetch('http://localhost:8080/api/auth/login', {
+            fetch('http://localhost:8080/api/auth/admin/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -31,12 +31,12 @@
             .then(response => response.json())
             .then(data => {
                 if (data.token) {
-                    localStorage.setItem('token', data.token);
-                    document.getElementById('message').textContent = 'Login successful!';
-                    // Redirect to home page or dashboard
-                    window.location.href = '/';
+                    localStorage.setItem('adminToken', data.token);
+                    document.getElementById('message').textContent = 'Admin login successful!';
+                    // Redirect to admin dashboard
+                    window.location.href = '/admin/dashboard';
                 } else {
-                    document.getElementById('message').textContent = 'Login failed. Please try again.';
+                    document.getElementById('message').textContent = 'Admin login failed. Please try again.';
                 }
             })
             .catch(error => {

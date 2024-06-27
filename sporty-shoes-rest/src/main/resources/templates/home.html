@@ -1,11 +1,63 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-    <title>Sporty Shoes</title>
+    <title>Welcome</title>
+    <style>
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
-    <h1>Welcome to Sporty Shoes</h1>
-    <a href="/register">Register</a>
-    <a href="/login">Login</a>
+    <h1>Welcome to Our Application</h1>
+    
+    <div id="unauthenticated">
+        <a href="/register"><button>Register</button></a>
+        <a href="/login"><button>Login</button></a>
+        <a href="/admin/login"><button>Admin Login</button></a>
+    </div>
+
+    <div id="authenticated" class="hidden">
+        <p>You are logged in.</p>
+        <button id="logoutButton">Logout</button>
+    </div>
+
+    <div id="adminAuthenticated" class="hidden">
+        <p>You are logged in as an admin.</p>
+        <a href="/admin/change-password"><button>Change Password</button></a>
+        <button id="adminLogoutButton">Admin Logout</button>
+    </div>
+
+    <script>
+        function checkAuthStatus() {
+            const token = localStorage.getItem('token');
+            const adminToken = localStorage.getItem('adminToken');
+
+            if (adminToken) {
+                document.getElementById('unauthenticated').classList.add('hidden');
+                document.getElementById('authenticated').classList.add('hidden');
+                document.getElementById('adminAuthenticated').classList.remove('hidden');
+            } else if (token) {
+                document.getElementById('unauthenticated').classList.add('hidden');
+                document.getElementById('authenticated').classList.remove('hidden');
+                document.getElementById('adminAuthenticated').classList.add('hidden');
+            } else {
+                document.getElementById('unauthenticated').classList.remove('hidden');
+                document.getElementById('authenticated').classList.add('hidden');
+                document.getElementById('adminAuthenticated').classList.add('hidden');
+            }
+        }
+
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            localStorage.removeItem('token');
+            checkAuthStatus();
+        });
+
+        document.getElementById('adminLogoutButton').addEventListener('click', function() {
+            localStorage.removeItem('adminToken');
+            checkAuthStatus();
+        });
+
+        // Check auth status when the page loads
+        checkAuthStatus();
+    </script>
 </body>
 </html>

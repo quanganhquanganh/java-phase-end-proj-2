@@ -77,7 +77,7 @@ public class User implements UserDetails {
 		return isAdmin;
 	}
 	
-	// private void setAdmin(boolean isAdmin) {
-	// 	this.isAdmin = isAdmin;
-	// }
+	public void setAdmin(boolean isAdmin) {
+	 	this.isAdmin = isAdmin;
+	}
 }

@@ -32,23 +32,17 @@ public class SecurityConfig {
         http
             .csrf().disable()
             .authorizeRequests()
-                .antMatchers("/", "/register", "/login", "/api/auth/**").permitAll()
+                .antMatchers("/", "/register", "/login", "/api/auth/login", "/api/auth/register", "/api/auth/admin/login", "/admin/**").permitAll()
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/**").authenticated()
-                .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
-            .and()
-            .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/")
-            .and()
-            .logout()
-                .logoutSuccessUrl("/")
             .and()
             .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
         http.headers().frameOptions().disable();
         
         return http.build();

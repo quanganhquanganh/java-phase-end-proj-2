@@ -20,4 +20,19 @@ public class HomeController {
     public String login() {
         return "login";
     }
+    
+    @GetMapping("/admin/login")
+    public String adminLogin() {
+        return "admin-login";
+    }
+
+    @GetMapping("/admin/dashboard")
+    public String adminDashboard() {
+        return "admin-dashboard";
+    }
+    
+    @GetMapping("/admin/change-password")
+    public String adminChangePassword() {
+        return "admin-change-password";
+    }
 }

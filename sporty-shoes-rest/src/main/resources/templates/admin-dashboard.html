@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div id="dashboard" class="hidden">
+        <h1>Admin Dashboard</h1>
+        <p>Welcome, Admin!</p>
+        <button id="logoutButton">Logout</button>
+
+        <!-- Add more admin dashboard content here -->
+    </div>
+
+    <div id="unauthorized" class="hidden">
+        <h1>Unauthorized Access</h1>
+        <p>You do not have permission to view this page. Please log in as an admin.</p>
+        <a href="/admin/login"><button>Admin Login</button></a>
+    </div>
+
+    <script>
+        function checkAdminAuth() {
+            const adminToken = localStorage.getItem('adminToken');
+            
+            if (adminToken) {
+                document.getElementById('dashboard').classList.remove('hidden');
+            } else {
+                document.getElementById('unauthorized').classList.remove('hidden');
+            }
+        }
+
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            localStorage.removeItem('adminToken');
+            window.location.href = '/admin/login';
+        });
+
+        // Check admin auth status when the page loads
+        checkAdminAuth();
+    </script>
+</body>
+</html>
