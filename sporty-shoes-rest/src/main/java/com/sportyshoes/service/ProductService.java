@@ -4,6 +4,9 @@ import com.sportyshoes.dto.ProductDTO;
 import com.sportyshoes.model.Product;
 import com.sportyshoes.repository.ProductRepository;
 import com.sportyshoes.repository.CategoryRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,11 +23,10 @@ public class ProductService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<ProductDTO> getAllProducts() {
-        return productRepository.findAll().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    public Page<ProductDTO> getAllProducts(Pageable pageable) {
+        return productRepository.findAll(pageable).map(this::convertToDTO);
     }
+
 
     public ProductDTO getProductById(Long id) {
         Product product = productRepository.findById(id)
@@ -56,6 +58,12 @@ public class ProductService {
     
     public List<ProductDTO> getProductsByCategory(Long categoryId) {
         return productRepository.findByCategoryId(categoryId).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+    
+    public List<ProductDTO> searchProducts(String searchTerm) {
+        return productRepository.searchProducts(searchTerm).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }

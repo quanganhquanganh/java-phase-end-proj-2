@@ -2,6 +2,9 @@ package com.sportyshoes.resources;
 
 import com.sportyshoes.dto.ProductDTO;
 import com.sportyshoes.service.ProductService;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +21,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<Page<ProductDTO>> getAllProducts(Pageable pageable) {
+        return ResponseEntity.ok(productService.getAllProducts(pageable));
     }
 
     @GetMapping("/{id}")
@@ -46,5 +49,10 @@ public class ProductController {
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<List<ProductDTO>> getProductsByCategory(@PathVariable Long categoryId) {
         return ResponseEntity.ok(productService.getProductsByCategory(categoryId));
+    }
+    
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductDTO>> searchProducts(@RequestParam String term) {
+        return ResponseEntity.ok(productService.searchProducts(term));
     }
 }
