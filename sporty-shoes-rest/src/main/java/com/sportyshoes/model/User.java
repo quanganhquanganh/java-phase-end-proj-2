@@ -1,17 +1,53 @@
 package com.sportyshoes.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Column(unique = true)
     private String username;
+    
     private String password;
     private String email;
-    private boolean isAdmin;
+    
+    @Column(nullable = false)
+    private boolean isAdmin = false;
+    
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority(isAdmin ? "ROLE_ADMIN" : "ROLE_USER"));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
     
 	public String getUsername() {
 		return username;
@@ -41,7 +77,7 @@ public class User {
 		return isAdmin;
 	}
 	
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
+	// private void setAdmin(boolean isAdmin) {
+	// 	this.isAdmin = isAdmin;
+	// }
 }
