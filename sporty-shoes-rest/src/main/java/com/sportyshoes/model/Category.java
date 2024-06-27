@@ -14,6 +14,21 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Product> products;
     
+    public Category() {}
+
+    // Constructor with name
+    public Category(String name) {
+        this.name = name;
+    }
+    
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
 	public String getName() {
 		return name;
 	}

@@ -1,15 +1,15 @@
 package com.sportyshoes.dto;
 
 public class LoginUserDTO {
-    private String email;
+    private String username;
     private String password;
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public LoginUserDTO setEmail(String email) {
-        this.email = email;
+    public LoginUserDTO setUsername(String username) {
+        this.username = username;
         return this;
     }
 
@@ -25,7 +25,7 @@ public class LoginUserDTO {
     @Override
     public String toString() {
         return "LoginUserDto{" +
-                "email='" + email + '\'' +
+                "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

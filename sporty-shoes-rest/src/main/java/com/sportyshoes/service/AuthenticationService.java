@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sportyshoes.dto.AdminLoginDTO;
-import com.sportyshoes.dto.AdminPasswordChangeDTO;
+import com.sportyshoes.dto.PasswordChangeDTO;
 import com.sportyshoes.dto.LoginUserDTO;
 import com.sportyshoes.dto.RegisterUserDTO;
 import com.sportyshoes.model.User;
@@ -47,40 +47,36 @@ public class AuthenticationService {
     public User authenticate(LoginUserDTO input) {
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
-                input.getEmail(),
+                input.getUsername(),
                 input.getPassword()
             )
         );
 
-        return userRepository.findByEmail(input.getEmail()).orElseThrow();
+        return userRepository.findByUsername(input.getUsername()).orElseThrow();
     }
     
     public User authenticateAdmin(AdminLoginDTO adminLoginDto) {
         Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(adminLoginDto.getEmail(), adminLoginDto.getPassword())
+            new UsernamePasswordAuthenticationToken(adminLoginDto.getUsername(), adminLoginDto.getPassword())
         );
 
-        User user = userRepository.findByEmail(adminLoginDto.getEmail()).orElseThrow();
+        User user = userRepository.findByUsername(adminLoginDto.getUsername()).orElseThrow();
         if (!user.isAdmin()) {
             throw new AccessDeniedException("User is not an admin");
         }
         return user;
     }
 
-    public void changeAdminPassword(String email, AdminPasswordChangeDTO passwordChangeDto) {
-        User admin = userRepository.findByEmail(email)
-            .orElseThrow(() -> new UsernameNotFoundException("Admin not found"));
+    public void changePassword(String username, PasswordChangeDTO passwordChangeDto) {
+        User user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        if (!admin.isAdmin()) {
-            throw new AccessDeniedException("User is not an admin");
-        }
-
-        if (!passwordEncoder.matches(passwordChangeDto.getCurrentPassword(), admin.getPassword())) {
+        if (!passwordEncoder.matches(passwordChangeDto.getCurrentPassword(), user.getPassword())) {
             throw new BadCredentialsException("Current password is incorrect");
         }
 
-        admin.setPassword(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
-        userRepository.save(admin);
+        user.setPassword(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
+        userRepository.save(user);
     }
 
     public List<User> allUsers() {

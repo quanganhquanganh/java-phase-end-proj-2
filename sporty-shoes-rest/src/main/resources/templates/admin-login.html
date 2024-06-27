@@ -1,47 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Admin Login</title>
 </head>
 <body>
-    <h1>Admin Login</h1>
+    <h2>Admin Login</h2>
     <form id="adminLoginForm">
-        <label for="email">Email:</label>
-        <input type="email" id="email" required><br><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" required><br><br>
+        <input type="text" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
         <button type="submit">Login</button>
     </form>
-    <p id="message"></p>
-
     <script>
         document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            fetch('http://localhost:8080/api/auth/admin/login', {
+            fetch('/api/auth/admin/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({
+                    username: document.getElementById('email').value,
+                    password: document.getElementById('password').value
+                }),
             })
             .then(response => response.json())
             .then(data => {
-                if (data.token) {
-                    localStorage.setItem('adminToken', data.token);
-                    document.getElementById('message').textContent = 'Admin login successful!';
-                    // Redirect to admin dashboard
-                    window.location.href = '/admin/dashboard';
-                } else {
-                    document.getElementById('message').textContent = 'Admin login failed. Please try again.';
-                }
+                console.log('Success:', data);
+                localStorage.setItem('adminToken', data.token);
+                alert('Admin login successful!');
+                window.location.href = '/admin/';  // Redirect to admin dashboard
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error('Error:', error);
-                document.getElementById('message').textContent = 'An error occurred. Please try again.';
+                alert('Admin login failed!');
             });
         });
     </script>

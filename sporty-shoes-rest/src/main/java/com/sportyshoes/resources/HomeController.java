@@ -26,7 +26,7 @@ public class HomeController {
         return "admin-login";
     }
 
-    @GetMapping("/admin/dashboard")
+    @GetMapping("/admin/")
     public String adminDashboard() {
         return "admin-dashboard";
     }

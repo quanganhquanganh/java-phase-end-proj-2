@@ -2,6 +2,7 @@ package com.sportyshoes.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,19 +30,25 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf().disable()
-            .authorizeRequests()
-                .antMatchers("/", "/register", "/login", "/api/auth/login", "/api/auth/register", "/api/auth/admin/login", "/admin/**").permitAll()
-                .antMatchers("/api/admin/**").hasRole("ADMIN")
-                .antMatchers("/api/**").authenticated()
-                .anyRequest().permitAll()
-            .and()
-            .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authenticationProvider(authenticationProvider)
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+    	http.csrf()
+        .disable()
+        .authorizeHttpRequests()
+        .antMatchers("/api/auth/**")
+        .permitAll()
+        .antMatchers(HttpMethod.GET, "/api/products", "/api/products/**")
+        .permitAll()
+        .antMatchers("/api/**")
+        .authenticated()
+        .antMatchers("/api/admin/**")
+        .hasRole("ADMIN")
+        .anyRequest()
+        .permitAll()
+        .and()
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .authenticationProvider(authenticationProvider)
+        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.headers().frameOptions().disable();
         

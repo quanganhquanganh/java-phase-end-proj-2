@@ -1,7 +1,11 @@
 package com.sportyshoes.service;
 
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.sportyshoes.dto.PasswordChangeDTO;
 import com.sportyshoes.model.User;
 import com.sportyshoes.repository.UserRepository;
 

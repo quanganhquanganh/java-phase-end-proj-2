@@ -1,21 +1,24 @@
 package com.sportyshoes.dto;
 
-public class AdminPasswordChangeDTO {
+public class PasswordChangeDTO {
 	private String currentPassword;
-    private String newPassword;
+  private String newPassword;
     
 	public String getCurrentPassword() {
 		return currentPassword;
 	}
 	
-	public void setCurrentPassword(String currentPassword) {
+	public PasswordChangeDTO setCurrentPassword(String currentPassword) {
 		this.currentPassword = currentPassword;
+		return this;
 	}
 	
 	public String getNewPassword() {
 		return newPassword;
 	}
-	public void setNewPassword(String newPassword) {
+	
+	public PasswordChangeDTO setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
+		return this;
 	}   
 }

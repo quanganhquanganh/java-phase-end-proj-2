@@ -20,7 +20,7 @@ public class InitializeUsersSetup implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // Check if admin user exists, if not create one
-        if (userRepository.findByEmail("admin@sportyshoes.com").isEmpty()) {
+        if (userRepository.findByUsername("admin").isEmpty()) {
             User adminUser = new User();
             adminUser.setUsername("admin");
             adminUser.setPassword(passwordEncoder.encode("adminPassword")); // Change this to a secure password
@@ -32,7 +32,7 @@ public class InitializeUsersSetup implements CommandLineRunner {
 
         // You can add more initial users here if needed
         // For example, a regular user:
-        if (userRepository.findByEmail("user@sportyshoes.com").isEmpty()) {
+        if (userRepository.findByUsername("user").isEmpty()) {
             User regularUser = new User();
             regularUser.setUsername("user");
             regularUser.setPassword(passwordEncoder.encode("userPassword")); // Change this to a secure password
