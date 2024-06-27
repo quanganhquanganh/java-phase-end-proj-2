@@ -41,6 +41,8 @@ public class SecurityConfig {
         .authenticated()
         .antMatchers("/api/admin/**")
         .hasRole("ADMIN")
+        .antMatchers("/api/orders/**")
+        .authenticated()
         .anyRequest()
         .permitAll()
         .and()
