@@ -1,7 +1,7 @@
 package com.sportyshoes.model;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "categories")
@@ -12,7 +12,7 @@ public class Category {
     private String name;
     
     @OneToMany(mappedBy = "category")
-    private List<Product> products;
+    private Set<Product> products;
     
     public Category() {}
 
@@ -36,4 +36,12 @@ public class Category {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
+    }
 }

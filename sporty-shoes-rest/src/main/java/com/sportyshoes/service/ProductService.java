@@ -53,6 +53,12 @@ public class ProductService {
         Product updatedProduct = productRepository.save(existingProduct);
         return convertToDTO(updatedProduct);
     }
+    
+    public List<ProductDTO> getProductsByCategory(Long categoryId) {
+        return productRepository.findByCategoryId(categoryId).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
 
     @Transactional
     public void deleteProduct(Long id) {
@@ -65,7 +71,7 @@ public class ProductService {
         dto.setName(product.getName());
         dto.setDescription(product.getDescription());
         dto.setPrice(product.getPrice());
-        dto.setCategoryId(product.getCategory().getId());
+        dto.setCategory(product.getCategory().getName());
         return dto;
     }
 
@@ -74,7 +80,7 @@ public class ProductService {
         product.setName(dto.getName());
         product.setDescription(dto.getDescription());
         product.setPrice(dto.getPrice());
-        product.setCategory(categoryRepository.findById(dto.getCategoryId())
+        product.setCategory(categoryRepository.findByName(dto.getCategory())
                 .orElseThrow(() -> new RuntimeException("Category not found")));
         return product;
     }
