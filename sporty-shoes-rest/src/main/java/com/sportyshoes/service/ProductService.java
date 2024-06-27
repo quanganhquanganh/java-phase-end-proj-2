@@ -47,7 +47,7 @@ public class ProductService {
         existingProduct.setName(productDTO.getName());
         existingProduct.setDescription(productDTO.getDescription());
         existingProduct.setPrice(productDTO.getPrice());
-        existingProduct.setCategory(categoryRepository.findById(productDTO.getCategoryId())
+        existingProduct.setCategory(categoryRepository.findByName(productDTO.getCategory())
                 .orElseThrow(() -> new RuntimeException("Category not found")));
 
         Product updatedProduct = productRepository.save(existingProduct);
